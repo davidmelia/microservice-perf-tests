@@ -1,0 +1,1 @@
+java -Xmx512m -Xss256k -jar netty-reactive-gateway/target/netty-reactive-gateway-0.0.1-SNAPSHOT.jar 
