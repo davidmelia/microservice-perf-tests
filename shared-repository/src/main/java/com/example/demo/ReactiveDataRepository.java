@@ -2,20 +2,19 @@ package com.example.demo;
 
 import java.time.Duration;
 
-import org.springframework.stereotype.Component;
-
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Component
 public class ReactiveDataRepository implements DataRepository<Mono<Data>, Flux<Data>> {
 
+	@Override
 	public Mono<Data> findOne(long delayMillis) {
 		return Mono.just(HardcodedData.DATA).delayElement(Duration.ofMillis(delayMillis));
 	}
 
+	@Override
 	public Flux<Data> findAll(long delay) {
 		log.warn("reactive()");
 

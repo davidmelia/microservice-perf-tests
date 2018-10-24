@@ -19,5 +19,6 @@
 	<modules>
         <module>shared-repository</module>
         <module>netty-reactive</module>
+        <module>tomcat</module>      
     </modules>
 </project> 
