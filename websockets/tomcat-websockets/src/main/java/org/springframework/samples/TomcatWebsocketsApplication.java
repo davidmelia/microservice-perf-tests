@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TomcatWebsocketsApplication {
 
 	public static void main(String[] args) {
+		SuperFudgeHelper.enhanceWebsocketMessageSelectorSpelContext();
 		SpringApplication.run(TomcatWebsocketsApplication.class, args);
+
 	}
 }

@@ -75,7 +75,7 @@ angular.module('springPortfolio.controllers', ['ui.bootstrap'])
                 positions.forEach(function(pos) {
                     $scope.positions[pos.ticker] = pos;
                 });
-                tradeService.fetchQuoteStream().then(null, null,
+                tradeService.fetchQuoteStream($scope.positions).then(null, null,
                     function(quote) {
                         processQuote(quote);
                     }

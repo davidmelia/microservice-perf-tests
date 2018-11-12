@@ -39,6 +39,30 @@ angular.module('springPortfolio.services', [])
                 }
                 return deferred.promise;
             },
+            subscribeDave: function (destination,positions) {
+            	
+                var deferred = $q.defer();
+                if (!stompClient) {
+                    deferred.reject("STOMP client not created");
+                } else {
+                	var tickers = [];
+                	angular.forEach(positions, function(value, key){
+                		this.push("'"+key+"'");
+                	},tickers);
+                	var selector = "#containsAny(headers['simpDestination'],{"+tickers+"})";                	
+                	//var headers = {'selector': "@websocketsInstrumentFilter.filter(headers['nativeHeaders'])"};
+                	//var headers = {'selector': "@websocketsInstrumentFilter.filter()"};
+                	//var headers = {'selector': "headers['nativeHeaders']['dave'].contains('melia')"};
+                	// var headers = {'selector': "headers['simpDestination'].contains('MSFT')"};
+                	// var headers = {'selector': "#containsAny(headers['simpDestination'],{'MSFT'})"};
+                	var headers = {'selector': selector};
+                	//var headers = {};
+                    stompClient.subscribe(destination, function (message) {
+                        deferred.notify(JSON.parse(message.body));
+                    },headers);
+                }
+                return deferred.promise;
+            },            
             subscribeSingle: function (destination) {
                 return $q(function (resolve, reject) {
                     if (!stompClient) {
@@ -71,8 +95,8 @@ angular.module('springPortfolio.services', [])
             loadPositions: function() {
                 return stompClient.subscribeSingle("/app/positions");
             },
-            fetchQuoteStream: function () {
-                return stompClient.subscribe("/topic/price.stock.*");
+            fetchQuoteStream: function (positions) {
+                return stompClient.subscribeDave("/topic/price.stock.*",positions);
             },
             fetchPositionUpdateStream: function () {
                 return stompClient.subscribe("/user/queue/position-updates");
