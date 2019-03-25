@@ -95,9 +95,12 @@ angular.module('springPortfolio.services', [])
             loadPositions: function() {
                 return stompClient.subscribeSingle("/app/positions");
             },
-            fetchQuoteStream: function (positions) {
-                return stompClient.subscribeDave("/topic/price.stock.*",positions);
+            fetchQuoteStreamOld: function (positions) {
+                return stompClient.subscribe("/topic/price.stock.*",positions);
             },
+            fetchQuoteStream: function (ticker) {
+                return stompClient.subscribe("/topic/price.stock."+ticker);
+            },           
             fetchPositionUpdateStream: function () {
                 return stompClient.subscribe("/user/queue/position-updates");
             },

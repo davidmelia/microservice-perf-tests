@@ -18,6 +18,8 @@ class LoadSimulation extends Simulation {
       ).pause(1 second, 2 seconds)
     }
   ) 
-  setUp(myScenario.inject(rampUsers(simUsers).over(30 seconds)))
+
+  
+  setUp(myScenario.inject(rampUsers(simUsers).during(30 seconds)))
 }
  
