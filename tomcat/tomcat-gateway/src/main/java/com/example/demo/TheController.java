@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.Arrays;
+
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,5 +39,16 @@ public class TheController {
 		log.info("get1 returned {}", data);
 		return data;
 	}
+	
+	@GetMapping("/find-one-and-all")
+	public DataComposite findOneAndAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
+		log.info("reactive()");
+		
+		Data[] datas = findAll(delay);
 
+		DataComposite data = new DataComposite(findOne(0),Arrays.asList(datas));
+		
+		log.info("reactive returned {}", data);
+		return data;
+	}
 }

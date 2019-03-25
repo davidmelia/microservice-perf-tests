@@ -17,17 +17,17 @@ public class TheController {
 
 	@GetMapping("/find-one")
 	public Data findOne(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
-		log.info("sync()");
+		log.info("findOne()");
 		Data data = repository.findOne(delay);
-		log.info("sync returned {}", data);
+		log.info("findOne returned {}", data);
 		return data;
 	}
 
 	@GetMapping("/find-all")
 	public Collection<Data> findAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
-		log.info("sync()");
+		log.info("findAll()");
 		Collection<Data> data = repository.findAll(delay);
-		log.info("sync returned {}", data);
+		log.info("findAll returned {}", data);
 		return data;
 	}
 

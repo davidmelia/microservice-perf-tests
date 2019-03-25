@@ -18,6 +18,13 @@ public class TheController {
 	private final WebClient webClient1;
 
 	public TheController(WebClient.Builder builder, GatewayConfig config) {
+//		TcpClient tcpClient = TcpClient.create(ConnectionProvider.elastic("dave"))
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) // Connection Timeout
+//                .doOnConnected(connection ->
+//                        connection.addHandlerLast(new ReadTimeoutHandler(10)) // Read Timeout
+//                                  .addHandlerLast(new WriteTimeoutHandler(10))); // Write Timeout
+//		HttpClient httpClient =HttpClient.from(tcpClient);
+
 		this.webClient1 = builder.baseUrl(config.getMicroserviceUrl1()).build();
 	}
 
@@ -26,8 +33,6 @@ public class TheController {
 		log.info("sync()");
 		Mono<Data> data = webClient1.get().uri("/find-one?microserviceDelay=" + delay).retrieve()
 				.bodyToMono(Data.class);
-//		Mono<String> data = webClient1.get().uri("?microserviceDelay=" + delay)
-//				.accept(MediaType.APPLICATION_STREAM_JSON).retrieve().bodyToMono(String.class);
 		log.info("sync returned {}", data);
 		return data;
 	}
@@ -38,12 +43,9 @@ public class TheController {
 
 		Flux<Data> data = webClient1.get().uri("/find-all?microserviceDelay=" + delay).retrieve()
 				.bodyToFlux(Data.class);
-//		Flux<Data> data = webClient1.get().uri("?microserviceDelay=" + delay).accept(MediaType.APPLICATION_STREAM_JSON)
-//				.retrieve().bodyToFlux(Data.class);
 		log.info("reactive returned {}", data);
 		return data;
 	}
-	
 	
 	@GetMapping("/find-one-and-all")
 	public Mono<DataComposite> findOneAndAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
@@ -57,4 +59,5 @@ public class TheController {
 		log.info("reactive returned {}", data);
 		return data;
 	}
+	
 }

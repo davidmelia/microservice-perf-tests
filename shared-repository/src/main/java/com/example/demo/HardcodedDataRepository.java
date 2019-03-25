@@ -12,6 +12,7 @@ public class HardcodedDataRepository implements DataRepository<Data, Collection<
 
 	@Override
 	public Data findOne(long delay) {
+		log.info("findOne()");
 		if (-1l == delay) {
 			delay = random.nextInt(1001);
 		}
@@ -22,12 +23,13 @@ public class HardcodedDataRepository implements DataRepository<Data, Collection<
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		log.info("findOne returned {}", HardcodedData.DATA);
 		return HardcodedData.DATA;
 	}
 
 	@Override
 	public Collection<Data> findAll(long delay) {
-		log.info("sync()");
+		log.info("findAll()");
 		if (-1l == delay) {
 			delay = random.nextInt(1001);
 		}
@@ -41,7 +43,7 @@ public class HardcodedDataRepository implements DataRepository<Data, Collection<
 
 		Collection<Data> datas = HardcodedData.DATAS;
 
-		log.info("sync returned {}", datas);
+		log.info("findAll returned {}", datas);
 		return datas;
 	}
 }
