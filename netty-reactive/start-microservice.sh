@@ -1,1 +1,1 @@
-java -Xmx512m -Xss256k -jar netty-reactive-microservice/target/netty-reactive-microservice-0.0.1.jar
+java -Xmx512m -Xss256k -Dserver.port=9080 -jar netty-reactive-microservice/target/netty-reactive-microservice-0.0.1.jar
