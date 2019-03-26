@@ -21,4 +21,18 @@
         <module>netty-reactive</module>
         <module>tomcat</module>      
     </modules>
+
+	<repositories>
+		<repository>
+		    <id>swagger</id>
+		    <name>Swagger</name>
+		    <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+		    <releases>
+		        <enabled>false</enabled>
+		    </releases>
+		    <snapshots>
+		        <enabled>true</enabled>
+		    </snapshots>
+		</repository>	
+	</repositories>    
 </project> 
