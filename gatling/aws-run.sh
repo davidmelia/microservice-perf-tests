@@ -1,0 +1,1 @@
+mvn clean -DTARGET_URL=http://10.242.131.36:9080/find-one?microserviceDelay=100 -DSIM_USERS=2000 gatling:test
