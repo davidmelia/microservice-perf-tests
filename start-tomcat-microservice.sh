@@ -1,1 +1,1 @@
-java -Xmx512m -Xss256k -Dserver.port=9080 -jar tomcat/tomcat-microservice/target/tomcat-microservice-0.0.1.jar 
+nohup process & java -Xmx512m -Xss256k -Dserver.port=9080 -jar tomcat/tomcat-microservice/target/tomcat-microservice-0.0.1.jar 
