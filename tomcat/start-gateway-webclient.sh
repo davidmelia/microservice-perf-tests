@@ -1,1 +1,0 @@
-java -Xmx512m -Xss256k -Dserver.port=9080 -jar tomcat-gateway-webclient/target/tomcat-gateway-webclient-0.0.1.jar 
