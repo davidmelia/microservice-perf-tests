@@ -1,1 +1,1 @@
-nohup java -Xmx512m -Xss256k -Dserver.port=9080 -Dcom.example.gateway.microservice-url1=http://10.242.131.203:9080 -jar tomcat/tomcat-gateway/target/tomcat-gateway-0.0.1.jar &
+nohup java -Xmx512m -Xss512k -Dserver.port=9080 -Dcom.example.gateway.microservice-url1=http://10.242.131.203:9080 -jar tomcat/tomcat-gateway/target/tomcat-gateway-0.0.1.jar &
