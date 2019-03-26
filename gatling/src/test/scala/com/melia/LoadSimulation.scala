@@ -15,7 +15,7 @@ class LoadSimulation extends Simulation {
     repeat(30) {
       exec(
         http("request_1").get(targetUrl)
-      ).pause(400 milliseconds, 500 milliseconds)
+      ).pause(0 milliseconds, 0 milliseconds)
     }
   ) 
 
