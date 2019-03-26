@@ -2,14 +2,17 @@ package com.example.demo;
 
 import java.util.Arrays;
 
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.netty.channel.ChannelOption;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 @RestController
 @Slf4j
@@ -18,13 +21,6 @@ public class TheController {
 	private final WebClient webClient1;
 
 	public TheController(WebClient.Builder builder, GatewayConfig config) {
-//		TcpClient tcpClient = TcpClient.create(ConnectionProvider.elastic("dave"))
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000) // Connection Timeout
-//                .doOnConnected(connection ->
-//                        connection.addHandlerLast(new ReadTimeoutHandler(10)) // Read Timeout
-//                                  .addHandlerLast(new WriteTimeoutHandler(10))); // Write Timeout
-//		HttpClient httpClient =HttpClient.from(tcpClient);
-
 		this.webClient1 = builder.baseUrl(config.getMicroserviceUrl1()).build();
 	}
 

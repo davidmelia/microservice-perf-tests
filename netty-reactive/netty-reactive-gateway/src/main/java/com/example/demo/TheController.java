@@ -2,14 +2,18 @@ package com.example.demo;
 
 import java.util.Arrays;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.netty.channel.ChannelOption;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 @RestController
 @Slf4j
@@ -24,8 +28,11 @@ public class TheController {
 	@GetMapping("/find-one")
 	public Mono<Data> findOne(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
 		log.info("sync()");
-		Mono<Data> data = webClient1.get().uri("/find-one?microserviceDelay=" + delay).retrieve()
-				.bodyToMono(Data.class);
+		Mono<Data> data = webClient1.get().uri("/find-one?microserviceDelay=" + delay).retrieve().onStatus(status -> status.equals(HttpStatus.NOT_FOUND), clientResponse ->
+        Mono.empty()).bodyToMono(Data.class);
+		
+		
+		
 //		Mono<String> data = webClient1.get().uri("?microserviceDelay=" + delay)
 //				.accept(MediaType.APPLICATION_STREAM_JSON).retrieve().bodyToMono(String.class);
 		log.info("sync returned {}", data);

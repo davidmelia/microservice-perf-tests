@@ -13,6 +13,9 @@
 		<artifactId>netty-reactive</artifactId>
 		<version>0.0.1</version>
 	</parent>
+	<properties>
+			<springfox.swagger2.version>3.0.0-SNAPSHOT</springfox.swagger2.version>
+	</properties>
 
 
 	<dependencies>
@@ -38,7 +41,23 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
-		</dependency>    	
+		</dependency>   
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger2.version}</version>
+        </dependency>		
+        <dependency>
+          	<groupId>io.springfox</groupId>
+  			<artifactId>springfox-spring-webflux</artifactId>
+  			<version>${springfox.swagger2.version}</version>
+        </dependency>		 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
