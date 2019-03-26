@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
-public class LoadTest {
+public class LoadTestSandpit {
 
 	@Autowired
 	private WebClient.Builder builder;

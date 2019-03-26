@@ -5,7 +5,7 @@
 	<artifactId>tomcat-gateway-webclient</artifactId>
 	<packaging>jar</packaging>
 
-	<name>tomcat-gateway</name>
+	<name>tomcat-gateway-webclient</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>

@@ -12,5 +12,6 @@
 	<modules>
         <module>tomcat-microservice</module>
         <module>tomcat-gateway</module>
+        <module>tomcat-gateway-webclient</module>        
     </modules>
 </project> 

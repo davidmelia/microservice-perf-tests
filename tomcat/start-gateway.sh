@@ -1,1 +1,1 @@
-java -Xmx512m -Xss256k -jar tomcat-gateway/target/tomcat-gateway-0.0.1-SNAPSHOT.jar 
+java -Xmx512m -Xss256k -jar tomcat-gateway/target/tomcat-gateway-0.0.1.jar 
