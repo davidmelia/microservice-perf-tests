@@ -15,13 +15,78 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
+		<springfox.swagger2.version>3.0.0-SNAPSHOT</springfox.swagger2.version>
+		<resilience4j.version>0.13.2</resilience4j.version>
 	</properties>	
 	<modules>
         <module>shared-repository</module>
         <module>netty-reactive</module>
         <module>tomcat</module>      
     </modules>
-
+	<dependencyManagement>
+		<dependencies>
+	        <dependency>
+	            <groupId>io.springfox</groupId>
+	            <artifactId>springfox-swagger2</artifactId>
+	            <version>${springfox.swagger2.version}</version>
+	        </dependency>
+	        <dependency>
+	            <groupId>io.springfox</groupId>
+	            <artifactId>springfox-swagger-ui</artifactId>
+	            <version>${springfox.swagger2.version}</version>
+	        </dependency>		
+	        <dependency>
+	          	<groupId>io.springfox</groupId>
+	  			<artifactId>springfox-spring-webflux</artifactId>
+	  			<version>${springfox.swagger2.version}</version>
+	        </dependency>		
+	        <dependency>
+	          	<groupId>io.springfox</groupId>
+	  			<artifactId>springfox-spring-webmvc</artifactId>
+	  			<version>${springfox.swagger2.version}</version>
+	        </dependency>		
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-spring-boot</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>	                	
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-circuitbreaker</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-ratelimiter</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-retry</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-annotation</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>			
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-bulkhead</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-cache</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>io.github.resilience4j</groupId>
+			    <artifactId>resilience4j-timelimiter</artifactId>
+			    <version>${resilience4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<repositories>
 		<repository>
 		    <id>swagger</id>
