@@ -14,4 +14,10 @@
         <module>tomcat-gateway</module>
         <module>tomcat-gateway-webclient</module>        
     </modules>
+    <dependencies>
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+	    </dependency>    
+    </dependencies>
 </project> 
