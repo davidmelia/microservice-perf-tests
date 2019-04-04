@@ -1,16 +1,15 @@
 package com.example.demo;
 
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import java.util.Arrays;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import io.netty.channel.ChannelOption;
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -19,49 +18,57 @@ import reactor.netty.http.client.HttpClient;
 @Slf4j
 public class TheController {
 
-	private final WebClient webClient1;
+  private final WebClient findOneWebClient;
+  private final WebClient findAllWebClient;
 
-	public TheController(WebClient.Builder builder, GatewayConfig config) {
-		this.webClient1 = builder.baseUrl(config.getMicroserviceUrl1()).build();
-	}
+  public TheController(WebClient.Builder builder, GatewayConfig config) {
 
-	@GetMapping("/find-one")
-	public Mono<Data> findOne(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
-		log.info("sync()");
-		Mono<Data> data = webClient1.get().uri("/find-one?microserviceDelay=" + delay).retrieve().onStatus(status -> status.equals(HttpStatus.NOT_FOUND), clientResponse ->
-        Mono.empty()).bodyToMono(Data.class);
-		
-		
-		
-//		Mono<String> data = webClient1.get().uri("?microserviceDelay=" + delay)
-//				.accept(MediaType.APPLICATION_STREAM_JSON).retrieve().bodyToMono(String.class);
-		log.info("sync returned {}", data);
-		return data;
-	}
+    this.findOneWebClient = builder
+        .clientConnector(new ReactorClientHttpConnector(
+            HttpClient.create().tcpConfiguration(client -> client.doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(10)).addHandlerLast(new WriteTimeoutHandler(10))))))
+        .baseUrl(config.getMicroserviceUrl1()).build();
 
-	@GetMapping("/find-all")
-	public Flux<Data> findAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
-		log.info("reactive()");
+    this.findAllWebClient = builder
+        .clientConnector(new ReactorClientHttpConnector(
+            HttpClient.create().tcpConfiguration(client -> client.doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(20)).addHandlerLast(new WriteTimeoutHandler(20))))))
+        .baseUrl(config.getMicroserviceUrl1()).build();
+  }
 
-		Flux<Data> data = webClient1.get().uri("/find-all?microserviceDelay=" + delay).retrieve()
-				.bodyToFlux(Data.class);
-//		Flux<Data> data = webClient1.get().uri("?microserviceDelay=" + delay).accept(MediaType.APPLICATION_STREAM_JSON)
-//				.retrieve().bodyToFlux(Data.class);
-		log.info("reactive returned {}", data);
-		return data;
-	}
-	
-	
-	@GetMapping("/find-one-and-all")
-	public Mono<DataComposite> findOneAndAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
-		log.info("reactive()");
-		
-		Mono<Data[]> datas = webClient1.get().uri("/find-all?microserviceDelay=" + delay).retrieve()
-				.bodyToMono(Data[].class);
+  @GetMapping("/find-one")
+  public Mono<Data> findOne(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
+    log.info("sync()");
+    Mono<Data> data =
+        findOneWebClient.get().uri("/find-one?microserviceDelay=" + delay).retrieve().onStatus(status -> status.equals(HttpStatus.NOT_FOUND), clientResponse -> Mono.empty()).bodyToMono(Data.class);
 
-		Mono<DataComposite> data = this.findOne(0).zipWith(datas).map(t -> new DataComposite(t.getT1(), Arrays.asList(t.getT2()))).cast(DataComposite.class);
-		
-		log.info("reactive returned {}", data);
-		return data;
-	}
+
+    // Mono<String> data = webClient1.get().uri("?microserviceDelay=" + delay)
+    // .accept(MediaType.APPLICATION_STREAM_JSON).retrieve().bodyToMono(String.class);
+    log.info("sync returned {}", data);
+    return data;
+  }
+
+  @GetMapping("/find-all")
+  public Flux<Data> findAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
+    log.info("reactive()");
+
+    Flux<Data> data = findAllWebClient.get().uri("/find-all?microserviceDelay=" + delay).retrieve().bodyToFlux(Data.class);
+    // Flux<Data> data = webClient1.get().uri("?microserviceDelay=" +
+    // delay).accept(MediaType.APPLICATION_STREAM_JSON)
+    // .retrieve().bodyToFlux(Data.class);
+    log.info("reactive returned {}", data);
+    return data;
+  }
+
+
+  @GetMapping("/find-one-and-all")
+  public Mono<DataComposite> findOneAndAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
+    log.info("reactive()");
+
+    Mono<Data[]> datas = findAllWebClient.get().uri("/find-all?microserviceDelay=" + delay).retrieve().bodyToMono(Data[].class);
+
+    Mono<DataComposite> data = this.findOne(0).zipWith(datas).map(t -> new DataComposite(t.getT1(), Arrays.asList(t.getT2()))).cast(DataComposite.class);
+
+    log.info("reactive returned {}", data);
+    return data;
+  }
 }
