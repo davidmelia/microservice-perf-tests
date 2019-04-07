@@ -1,11 +1,13 @@
 package com.example.demo;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,8 @@ import reactor.netty.http.client.HttpClient;
 
 @RestController
 @Slf4j
+@CircuitBreaker(name = "my-microservice")
+@RateLimiter(name = "my-microservice")
 public class TheController {
 
   private final WebClient findOneWebClient;
@@ -37,8 +41,7 @@ public class TheController {
   @GetMapping("/find-one")
   public Mono<Data> findOne(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
     log.info("sync()");
-    Mono<Data> data =
-        findOneWebClient.get().uri("/find-one?microserviceDelay=" + delay).retrieve().onStatus(status -> status.equals(HttpStatus.NOT_FOUND), clientResponse -> Mono.empty()).bodyToMono(Data.class);
+    Mono<Data> data = findOneWebClient.get().uri("/find-one?microserviceDelay=" + delay).retrieve().bodyToMono(Data.class);
 
 
     // Mono<String> data = webClient1.get().uri("?microserviceDelay=" + delay)
@@ -59,6 +62,13 @@ public class TheController {
     return data;
   }
 
+  @GetMapping("/find-one-with-exception")
+  public Mono<Data> findOneWithException() throws BindException {
+    log.info("sync()");
+    Mono<Data> data = findOneWebClient.get().uri("/find-one-with-exception").retrieve().bodyToMono(Data.class);
+    log.info("sync returned {}", data);
+    return data;
+  }
 
   @GetMapping("/find-one-and-all")
   public Mono<DataComposite> findOneAndAll(@RequestParam(value = "microserviceDelay", defaultValue = "0") long delay) {
