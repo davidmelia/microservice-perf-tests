@@ -16,7 +16,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
 		<springfox.swagger2.version>3.0.0-SNAPSHOT</springfox.swagger2.version>
-		<resilience4j.version>0.15.0</resilience4j.version>
+		<resilience4j.version>0.14.1</resilience4j.version>
 	</properties>	
 	<modules>
         <module>shared-repository</module>
