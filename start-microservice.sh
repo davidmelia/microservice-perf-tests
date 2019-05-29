@@ -1,1 +1,1 @@
-nohup java -Xmx512m -Xss256k -Dserver.port=9080 -jar netty-reactive/netty-reactive-microservice/target/netty-reactive-microservice-0.0.1.jar &
+nohup java -Xmx256m -Xss512k -Dserver.port=9080 -jar netty-reactive/netty-reactive-microservice/target/netty-reactive-microservice-0.0.1.jar &
